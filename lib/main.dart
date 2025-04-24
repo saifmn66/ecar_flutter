@@ -1,5 +1,6 @@
 import 'package:e_car/Home/home.dart';
 import 'package:e_car/intro%20page/onboarding.dart';
+import 'package:e_car/login/screens/carVerifScreen.dart';
 import 'package:e_car/login/screens/logScreen.dart';
 import 'package:e_car/navbar/bottom-nav.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +17,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'My Flutter App',
-      initialRoute: '/login',
+      initialRoute: '/test',
       routes: {
         '/intro': (context) => const Onboarding(),
         '/login': (context) => const LogScreen(),
         '/home': (context) => const BottomNav(),
+        '/test': (context) => const CarVerifyScreen(),
       },
     );
   }
 }
 
-// 1. Intro/Splash Screen (First screen users see)
+// 1. Intro/Splash Screen (First screen users see )
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
 

@@ -5,7 +5,7 @@ class CustomButton extends StatelessWidget {
   final Color textColor;
   final Color borderColor;
   final String text;
-  final VoidCallback onPressed; 
+  final VoidCallback onPressed;
 
   const CustomButton({
     super.key,
@@ -26,7 +26,7 @@ class CustomButton extends StatelessWidget {
       child: TextButton(
         style: ButtonStyle(
           padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-            const EdgeInsets.symmetric(vertical: 22), // Vertical padding only
+            const EdgeInsets.symmetric(vertical: 15), // Vertical padding only
           ),
           backgroundColor: WidgetStateProperty.all<Color>(color),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -38,10 +38,7 @@ class CustomButton extends StatelessWidget {
           foregroundColor: WidgetStateProperty.all<Color>(textColor),
         ),
         onPressed: onPressed,
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 18.0),
-        ),
+        child: Text(text, style: const TextStyle(fontSize: 18.0)),
       ),
     );
   }

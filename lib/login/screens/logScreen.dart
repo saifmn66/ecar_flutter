@@ -1,5 +1,5 @@
-import 'package:e_car/Home/home.dart';
 import 'package:e_car/login/screens/loginScreen.dart';
+import 'package:e_car/login/screens/registerScreen.dart';
 import 'package:e_car/login/widgets/button.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +34,7 @@ class LogScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => RegisterScreen()),
                 );
               },
             ),

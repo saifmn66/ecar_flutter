@@ -24,65 +24,67 @@ class _ChargingStationsMapState extends State<ChargingStationsMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          FlutterMap(
-            options: MapOptions(
-              initialCenter: LatLng(
-                37.7749,
-                -122.4194,
-              ), // Default center (San Francisco)
+      body: SafeArea(
+        child: Stack(
+          children: [
+            FlutterMap(
+              options: MapOptions(
+                initialCenter: LatLng(
+                  37.7749,
+                  -122.4194,
+                ), // Default center (San Francisco)
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  subdomains: ['a', 'b', 'c'],
+                ),
+                MarkerLayer(
+                  markers:
+                      chargingStations.map((station) {
+                        return Marker(
+                          point: station,
+                          child: const Icon(
+                            Icons.location_on,
+                            color: Colors.green,
+                            size: 50.0,
+                          ),
+                        );
+                      }).toList(),
+                ),
+              ],
             ),
-            children: [
-              TileLayer(
-                urlTemplate:
-                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                subdomains: ['a', 'b', 'c'],
-              ),
-              MarkerLayer(
-                markers:
-                    chargingStations.map((station) {
-                      return Marker(
-                        point: station,
-                        child: const Icon(
-                          Icons.location_on,
-                          color: Colors.green,
-                          size: 50.0,
-                        ),
-                      );
-                    }).toList(),
-              ),
-            ],
-          ),
-          Positioned(
-            top: 16.0,
-            left: 16.0,
-            right: 16.0,
-            child: Material(
-              elevation: 4.0,
-              borderRadius: BorderRadius.circular(12.0),
-              child: TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  hintText: "Search for a location...",
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      searchController.clear();
-                    },
+            Positioned(
+              top: 16.0,
+              left: 16.0,
+              right: 16.0,
+              child: Material(
+                elevation: 4.0,
+                borderRadius: BorderRadius.circular(12.0),
+                child: TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    hintText: "Search for a location...",
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        searchController.clear();
+                      },
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
