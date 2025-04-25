@@ -17,12 +17,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'My Flutter App',
-      initialRoute: '/test',
+      initialRoute: '/login',
       routes: {
         '/intro': (context) => const Onboarding(),
         '/login': (context) => const LogScreen(),
         '/home': (context) => const BottomNav(),
-        '/test': (context) => const CarVerifyScreen(),
+        '/test':
+            (context) => const CarVerifyScreen(
+              Name: "test",
+              Email: "Email",
+              Phone: "Phone",
+              Passwd: "Passwd",
+            ),
       },
     );
   }

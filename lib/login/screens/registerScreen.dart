@@ -272,7 +272,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const NumVerifyScreen(),
+                      builder: (context) => NumVerifyScreen(Name: nameController.text, Email: emailController.text, Phone: phoneController.text, Passwd: passwordController.text),
                     ),
                   );
                 },

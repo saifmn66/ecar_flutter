@@ -4,7 +4,11 @@ import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:toastification/toastification.dart';
 
 class NumVerifyScreen extends StatefulWidget {
-  const NumVerifyScreen({super.key});
+  final String Name;
+  final String Email;
+  final String Phone;
+  final String Passwd;
+  const NumVerifyScreen({super.key, required this.Email, required this.Phone, required this.Passwd, required this.Name});
 
   @override
   State<NumVerifyScreen> createState() => _NumVerifyScreenState();
@@ -101,7 +105,7 @@ class _NumVerifyScreenState extends State<NumVerifyScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const CarVerifyScreen(),
+                              builder: (context) => CarVerifyScreen(Name: widget.Name, Email: widget.Email, Phone: widget.Phone, Passwd: widget.Passwd),
                             ),
                           );
                         } else {
