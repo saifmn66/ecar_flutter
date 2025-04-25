@@ -15,7 +15,7 @@ class Job {
 
 const List<Job> _list = [
   Job('Developer', Icons.developer_mode),
-  Job('Designer', Icons.design_services),
+  Job('67f7bc38129f3cc45e9170af', Icons.design_services),
   Job('Consultant', Icons.account_balance),
   Job('Student', Icons.school),
   Job('Developer', Icons.developer_mode),

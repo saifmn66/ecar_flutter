@@ -4,17 +4,16 @@ import '../models/userModel.dart';
 
 class UserController {
   final String baseUrl =
-      'http://10.0.2.2:3000/user/'; // Replace with your API URL
+      'http://192.168.122.1:3000/user/';
 
-  // Create a new user (POST request)
   Future<void> createUser(User user) async {
-    final url = Uri.parse(baseUrl); // Endpoint for creating a user
+    final url = Uri.parse(baseUrl); 
 
     try {
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(user.toJson()), // Convert User object to JSON
+        body: jsonEncode(user.toJson()), 
       );
 
       if (response.statusCode == 201) {
@@ -27,5 +26,4 @@ class UserController {
     }
   }
 
-  // Fetch user data by ID (GET request)
 }

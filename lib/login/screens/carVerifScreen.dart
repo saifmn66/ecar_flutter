@@ -23,12 +23,13 @@ class CarVerifyScreen extends StatefulWidget {
 }
 
 class _CarVerifyScreenState extends State<CarVerifyScreen> {
-  // Define the TextEditingController
   final TextEditingController carModelController = TextEditingController();
   final TextEditingController identifierController = TextEditingController();
   final TextEditingController serialNumberController = TextEditingController();
 
-  final UserController userService = UserController();
+  final UserController userService =
+      UserController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,6 @@ class _CarVerifyScreenState extends State<CarVerifyScreen> {
                 ),
                 const SizedBox(height: 40.0),
 
-                // Car Model Input Field
                 const Text(
                   "Car Model",
                   style: TextStyle(
@@ -71,7 +71,6 @@ class _CarVerifyScreenState extends State<CarVerifyScreen> {
                 ),
                 const SizedBox(height: 12.0),
 
-                // Car Identifier Input Field
                 const Text(
                   "Car Identifier",
                   style: TextStyle(
@@ -144,40 +143,56 @@ class _CarVerifyScreenState extends State<CarVerifyScreen> {
                 const SizedBox(height: 12.0),
 
                 // Register Button
-                CustomButton(
-                  color: const Color(0xFF5AE4A7),
-                  textColor: const Color.fromARGB(255, 255, 255, 255),
-                  borderColor: const Color(0xFF5AE4A7),
-                  text: "Register",
-                  onPressed: () async {
-                    // Collect user and car data
-                    final car = Car(
-                      carModel: carModelController.text.trim(),
-                      carId: identifierController.text.trim(),
-                      serialNumber: serialNumberController.text.trim(),
-                      battery: 100, // Default battery value
-                    );
+                isLoading
+                    ? const Center(
+                      child:
+                          CircularProgressIndicator(), 
+                    )
+                    : CustomButton(
+                      color: const Color(0xFF5AE4A7),
+                      textColor: const Color.fromARGB(255, 255, 255, 255),
+                      borderColor: const Color(0xFF5AE4A7),
+                      text: "Register",
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true; 
+                        });
 
-                    final user = User(
-                      phoneNumber: widget.Phone,
-                      email: widget.Email,
-                      userName: widget.Name,
-                      cars: [car],
-                      passwd: widget.Passwd,
-                      role: 'user', // Default role
-                    );
+                        try {
+                          final car = Car(
+                            carModel: carModelController.text.trim(),
+                            carId: identifierController.text.trim(),
+                            serialNumber: serialNumberController.text.trim(),
+                            battery: 100, 
+                          );
 
-                    // Call the UserController to create the user
-                    await userService.createUser(user);
+                          final user = User(
+                            phoneNumber: widget.Phone,
+                            email: widget.Email,
+                            userName: widget.Name,
+                            cars: [car],
+                            passwd: widget.Passwd,
+                            role: 'User', 
+                          );
 
-                    // Show success message or navigate to another screen
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('User registered successfully!'),
-                      ),
-                    );
-                  },
-                ),
+                          await userService.createUser(user);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('User registered successfully!'),
+                            ),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text('Error: $e')));
+                        } finally {
+                          setState(() {
+                            isLoading = false; 
+                          });
+                        }
+                      },
+                    ),
               ],
             ),
           ),
