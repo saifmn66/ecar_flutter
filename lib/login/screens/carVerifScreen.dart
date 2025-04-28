@@ -1,8 +1,11 @@
+import 'package:e_car/login/screens/helloScreen.dart';
 import 'package:e_car/login/services/userService.dart';
 import 'package:e_car/login/widgets/button.dart';
 import 'package:e_car/login/widgets/dropDownWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:e_car/login/models/userModel.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:toastification/toastification.dart';
 
 class CarVerifyScreen extends StatefulWidget {
   final String Name;
@@ -27,8 +30,7 @@ class _CarVerifyScreenState extends State<CarVerifyScreen> {
   final TextEditingController identifierController = TextEditingController();
   final TextEditingController serialNumberController = TextEditingController();
 
-  final UserController userService =
-      UserController();
+  final UserController userService = UserController();
   bool isLoading = false;
 
   @override
@@ -144,9 +146,11 @@ class _CarVerifyScreenState extends State<CarVerifyScreen> {
 
                 // Register Button
                 isLoading
-                    ? const Center(
-                      child:
-                          CircularProgressIndicator(), 
+                    ? Center(
+                      child: LoadingAnimationWidget.dotsTriangle(
+                        size: 50,
+                        color: const Color.fromARGB(255, 77, 224, 158),
+                      ),
                     )
                     : CustomButton(
                       color: const Color(0xFF5AE4A7),
@@ -155,7 +159,7 @@ class _CarVerifyScreenState extends State<CarVerifyScreen> {
                       text: "Register",
                       onPressed: () async {
                         setState(() {
-                          isLoading = true; 
+                          isLoading = true;
                         });
 
                         try {
@@ -163,7 +167,7 @@ class _CarVerifyScreenState extends State<CarVerifyScreen> {
                             carModel: carModelController.text.trim(),
                             carId: identifierController.text.trim(),
                             serialNumber: serialNumberController.text.trim(),
-                            battery: 100, 
+                            battery: 100,
                           );
 
                           final user = User(
@@ -172,23 +176,50 @@ class _CarVerifyScreenState extends State<CarVerifyScreen> {
                             userName: widget.Name,
                             cars: [car],
                             passwd: widget.Passwd,
-                            role: 'User', 
+                            role: 'User',
                           );
 
                           await userService.createUser(user);
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('User registered successfully!'),
+                          toastification.show(
+                            context: context,
+                            type: ToastificationType.success,
+                            style: ToastificationStyle.flat,
+                            title: const Text('Account created successfully!'),
+                            primaryColor: const Color.fromARGB(
+                              255,
+                              81,
+                              222,
+                              74,
+                            ),
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            autoCloseDuration: const Duration(seconds: 5),
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HelloScreen(),
                             ),
                           );
                         } catch (e) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text('Error: $e')));
+                          toastification.show(
+                            context: context,
+                            type: ToastificationType.error,
+                            style: ToastificationStyle.flat,
+                            title: const Text('Error!'),
+                            primaryColor: const Color.fromARGB(
+                              255,
+                              222,
+                              74,
+                              74,
+                            ),
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            autoCloseDuration: const Duration(seconds: 5),
+                          );
                         } finally {
                           setState(() {
-                            isLoading = false; 
+                            isLoading = false;
                           });
                         }
                       },

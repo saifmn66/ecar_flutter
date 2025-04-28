@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -51,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:3000/user/login/'), // emulator 10.0.2.2
+        Uri.parse('http://192.168.122.1:3000/user/login/'), // emulator 10.0.2.2
         headers: {'Content-Type': 'application/json'},
         body: '{"Email": "$email", "Passwd": "$password"}',
       );
@@ -211,7 +213,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 40.0),
               isLoading
-                  ? const CircularProgressIndicator()
+                  ? LoadingAnimationWidget.dotsTriangle(
+                    size: 50,
+                    color: const Color.fromARGB(255, 77, 224, 158),
+                  )
                   : CustomButton(
                     color: const Color(0xFF5AE4A7),
                     textColor: const Color.fromARGB(255, 255, 255, 255),
