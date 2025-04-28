@@ -1,4 +1,5 @@
-import 'package:e_car/Home/widgets/small-card.dart';
+import 'package:easy_pie_chart/easy_pie_chart.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,139 +7,170 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double fullwidth = MediaQuery.of(context).size.width;
-    final double half = (fullwidth / 2) - 25;
-
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final bgHeight = screenHeight * 0.45;
+    final double val = 80;
     return Scaffold(
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 20.0,
-                  left: 20.0,
-                  top: 70.0,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
-                  child: Container(
-                    height: 200,
-                    width: double.maxFinite > 800 ? 700 : double.maxFinite,
-                    color: Colors.blue,
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: Image.asset(
-                            "images/cover.jpg",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Positioned.fill(
-                          child: Container(
-                            color: Colors.black.withOpacity(0.2),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [],
-                          ),
-                        ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF5AE4A7),
+                        const Color.fromARGB(255, 255, 255, 255),
                       ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
                   ),
+                  height: bgHeight,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(121, 49, 198, 91),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color.fromARGB(0, 114, 114, 114),
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.person,
-                          color: Color.fromARGB(255, 73, 73, 73),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0, left: 20.0),
+                      child: Text(
+                        "Hi, User",
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(121, 49, 198, 91),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color.fromARGB(0, 114, 114, 114),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0, right: 20.0),
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundColor: const Color.fromARGB(
+                          158,
+                          255,
+                          255,
+                          255,
                         ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.settings,
-                          color: Color.fromARGB(255, 73, 73, 73),
+                        child: ClipOval(
+                          child: Image.asset(
+                            'images/car.png',
+                            fit: BoxFit.cover,
+                            width: 70,
+                            height: 70,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-                children: [
-                  SmallCard(
-                    width: half,
-                    lottie: "images/bg.json",
-                    content: Column(children: const [
-                        
-                      ],
-                    ),
+                Positioned(
+                  right: 0,
+                  top: screenHeight * 0.1,
+                  child: Image.asset(
+                    'images/car.png',
+                    fit: BoxFit.cover,
+                    width: (screenWidth * 0.9),
+                    height: 300,
                   ),
-                  SmallCard(
-                    width: half,
-                    lottie: "images/bg.json",
-                    content: Column(children: const [
-                        
-                      ],
-                    ),
-                  ),
-                  SmallCard(
-                    width: half,
-                    lottie: "images/bg.json",
-                    content: Column(children: const [
-                        
-                      ],
-                    ),
-                  ),
-                  SmallCard(
-                    width: half,
-                    lottie: "images/bg.json",
-                    content: Column(children: const [
-                        
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    width: screenWidth * 0.47,
+                    color: const Color.fromARGB(0, 255, 36, 36),
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          textAlign: TextAlign.left,
+                          "Battery",
+                          style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w600,
+                            color: Color.fromARGB(255, 78, 77, 77),
+                          ),
+                        ),
+                        Text(
+                          "last updated: 2 days ago",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: EasyPieChart(
+                            children: [
+                              PieData(
+                                value: val,
+                                color:
+                                    val > 50
+                                        ? Color(0xFF5AE4A7)
+                                        : val > 20
+                                        ? Color.fromARGB(255, 226, 179, 60)
+                                        : Color.fromARGB(255, 228, 90, 90),
+                              ),
+                              PieData(
+                                value: (100 - val),
+                                color: const Color.fromARGB(82, 201, 201, 201),
+                              ),
+                            ],
+                            // Optional parameters you can customize:
+                            size: 70,
+                            pieType: PieType.crust, // or PieType.filled
+                            borderWidth: 10.0,
+                            borderEdge: StrokeCap.butt,
+                            showValue: false,
+                            centerText: "$val%",
+                            centerStyle: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: const Color.fromARGB(255, 114, 113, 113),
+                            ),
+                            shouldAnimate: true,
+                            animateDuration: Duration(seconds: 1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(width: screenWidth * 0.02),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    width: screenWidth * 0.47,
+                    color: const Color.fromARGB(255, 255, 36, 36),
+                    padding: const EdgeInsets.all(10),
+                    child: const Text(
+                      textAlign: TextAlign.left,
+                      "Battery",
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                        color: Color.fromARGB(255, 127, 127, 127),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
