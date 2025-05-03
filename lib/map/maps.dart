@@ -19,10 +19,14 @@ class _ChargingStationsMapState extends State<ChargingStationsMap> {
   ];
 
   final TextEditingController searchController = TextEditingController();
-  bool isDark = false;
+  bool isExpanded = false;
+  double panelPosition = 200; // Initial height of the panel
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -79,6 +83,116 @@ class _ChargingStationsMapState extends State<ChargingStationsMap> {
                     ),
                     filled: true,
                     fillColor: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0.0,
+              child: GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  setState(() {
+                    panelPosition -= details.delta.dy;
+                    panelPosition = panelPosition.clamp(
+                      200.0,
+                      screenHeight * 0.8,
+                    );
+                  });
+                },
+                onVerticalDragEnd: (details) {
+                  if (details.primaryVelocity! < 0) {
+                    setState(() {
+                      panelPosition = screenHeight * 0.8;
+                      isExpanded = true;
+                    });
+                  } else if (details.primaryVelocity! > 0) {
+                    setState(() {
+                      panelPosition = 200.0;
+                      isExpanded = false;
+                    });
+                  } else {
+                    setState(() {
+                      if (panelPosition > screenHeight * 0.4) {
+                        panelPosition = screenHeight * 0.8;
+                        isExpanded = true;
+                      } else {
+                        panelPosition = 200.0;
+                        isExpanded = false;
+                      }
+                    });
+                  }
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    width: screenWidth,
+                    height: panelPosition,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    child: Column(
+                      children: [
+                        // Handle to drag or tap
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isExpanded = !isExpanded;
+                              panelPosition =
+                                  isExpanded ? screenHeight * 0.8 : 200.0;
+                            });
+                          },
+                          child: Container(
+                            height: 120,
+                            color: Color(0xFF5AE4A7),
+                            child: Center(
+                              child: Icon(
+                                isExpanded
+                                    ? Icons.keyboard_arrow_down
+                                    : Icons.keyboard_arrow_up,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Content of the panel
+                        Expanded(
+                          // Moved Expanded to be a direct child of Column
+                          child: SingleChildScrollView(
+                            child: Container(
+                              color: Colors.white,
+                              width: screenWidth,
+                              height: panelPosition - 80,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Notifications",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20.0),
+                                    Text(
+                                      isExpanded
+                                          ? "Expanded content goes here..."
+                                          : "You have no new notifications.",
+                                      style: const TextStyle(fontSize: 16.0),
+                                    ),
+                                    // Add more content here
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

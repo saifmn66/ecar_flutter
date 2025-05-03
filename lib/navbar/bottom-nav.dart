@@ -66,15 +66,15 @@ class _BottomNavState extends State<BottomNav> {
         ), // Adds space below icon
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          width: _selectedIndex == index ? 55 : 45,
-          height: _selectedIndex == index ? 50 : 40,
+          width: _selectedIndex == index ? 45 : 35,
+          height: _selectedIndex == index ? 40 : 30,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _selectedIndex == index ? Colors.white : Colors.transparent,
           ),
           child: Icon(
             icon,
-            size: _selectedIndex == index ? 35 : 30,
+            size: _selectedIndex == index ? 30 : 25,
             color:
                 _selectedIndex == index
                     ? const Color.fromARGB(255, 36, 36, 36)
