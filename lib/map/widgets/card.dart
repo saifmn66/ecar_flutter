@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({super.key});

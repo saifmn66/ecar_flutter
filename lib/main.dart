@@ -1,6 +1,5 @@
 import 'package:e_car/Home/home.dart';
 import 'package:e_car/intro%20page/onboarding.dart';
-import 'package:e_car/login/screens/carVerifScreen.dart';
 import 'package:e_car/login/screens/logScreen.dart';
 import 'package:e_car/map/maps.dart';
 import 'package:e_car/navbar/bottom-nav.dart';
