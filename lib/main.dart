@@ -2,6 +2,7 @@ import 'package:e_car/Home/home.dart';
 import 'package:e_car/intro%20page/onboarding.dart';
 import 'package:e_car/login/screens/carVerifScreen.dart';
 import 'package:e_car/login/screens/logScreen.dart';
+import 'package:e_car/map/maps.dart';
 import 'package:e_car/navbar/bottom-nav.dart';
 import 'package:flutter/material.dart';
 
@@ -17,18 +18,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'My Flutter App',
-      initialRoute: '/home',
+      initialRoute: '/test',
       routes: {
         '/intro': (context) => const Onboarding(),
         '/login': (context) => const LogScreen(),
         '/home': (context) => const BottomNav(),
-        '/test':
-            (context) => const CarVerifyScreen(
-              Name: "test",
-              Email: "Email",
-              Phone: "Phone",
-              Passwd: "Passwd",
-            ),
+        '/test': (context) => const ChargingStationsMap(),
       },
     );
   }

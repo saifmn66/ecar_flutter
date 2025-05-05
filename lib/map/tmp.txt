@@ -1,0 +1,307 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+
+class ChargingStationsMap extends StatefulWidget {
+  const ChargingStationsMap({super.key});
+
+  @override
+  State<ChargingStationsMap> createState() => _ChargingStationsMapState();
+}
+
+class _ChargingStationsMapState extends State<ChargingStationsMap> {
+  final List<LatLng> chargingStations = [
+    LatLng(37.7749, -122.4194), // San Francisco
+    LatLng(36.7749, -122.4194), // San Francisco
+    LatLng(38.7749, -122.4194), // San Francisco
+    LatLng(34.0522, -118.2437), // Los Angeles
+    LatLng(40.7128, -74.0060), // New York
+  ];
+
+  final TextEditingController searchController = TextEditingController();
+  bool isExpanded = false;
+  double panelPosition = 200; // Initial height of the panel
+
+  @override
+  Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            FlutterMap(
+              options: MapOptions(
+                initialCenter: LatLng(
+                  37.7749,
+                  -122.4194,
+                ), // Default center (San Francisco)
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  subdomains: ['a', 'b', 'c'],
+                ),
+                MarkerLayer(
+                  markers:
+                      chargingStations.map((station) {
+                        return Marker(
+                          point: station,
+                          child: const Icon(
+                            Icons.location_on,
+                            color: Colors.green,
+                            size: 50.0,
+                          ),
+                        );
+                      }).toList(),
+                ),
+              ],
+            ),
+            Positioned(
+              top: 16.0,
+              left: 16.0,
+              right: 16.0,
+              child: Material(
+                elevation: 4.0,
+                borderRadius: BorderRadius.circular(12.0),
+                child: TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    hintText: "Search for a location...",
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        searchController.clear();
+                      },
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0.0,
+              child: GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  setState(() {
+                    panelPosition -= details.delta.dy;
+                    panelPosition = panelPosition.clamp(
+                      200.0,
+                      screenHeight * 0.8,
+                    );
+                  });
+                },
+                onVerticalDragEnd: (details) {
+                  if (details.primaryVelocity! < 0) {
+                    setState(() {
+                      panelPosition = screenHeight * 0.8;
+                      isExpanded = true;
+                    });
+                  } else if (details.primaryVelocity! > 0) {
+                    setState(() {
+                      panelPosition = 200.0;
+                      isExpanded = false;
+                    });
+                  } else {
+                    setState(() {
+                      if (panelPosition > screenHeight * 0.4) {
+                        panelPosition = screenHeight * 0.8;
+                        isExpanded = true;
+                      } else {
+                        panelPosition = 200.0;
+                        isExpanded = false;
+                      }
+                    });
+                  }
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    width: screenWidth,
+                    height: panelPosition,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    child: Column(
+                      children: [
+                        // Handle to drag or tap
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isExpanded = !isExpanded;
+                              panelPosition =
+                                  isExpanded ? screenHeight * 0.8 : 200.0;
+                            });
+                          },
+                          child: Container(
+                            height: 120,
+                            color: Color(0xFF5AE4A7),
+                            child: Center(
+                              child: Icon(
+                                isExpanded
+                                    ? Icons.keyboard_arrow_down
+                                    : Icons.keyboard_arrow_up,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Content of the panel
+                        Expanded(
+                          // Moved Expanded to be a direct child of Column
+                          child: SingleChildScrollView(
+                            child: Container(
+                              color: Colors.white,
+                              width: screenWidth,
+                              height: panelPosition - 80,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Notifications",
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20.0),
+                                    Text(
+                                      isExpanded
+                                          ? "Expanded content goes here..."
+                                          : "You have no new notifications.",
+                                      style: const TextStyle(fontSize: 16.0),
+                                    ),
+                                    // Add more content here
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DraggableScrollableSheet(
+              initialChildSize: 0.2,
+              minChildSize: 0.2,
+              maxChildSize: 0.8,
+              builder: (context, scrollController) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                    color: const Color(0xFF83EBBD),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                    child: ListView(
+                      controller:
+                          scrollController, // Important for proper scrolling
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Row( ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  "Find the nearest charging stations",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  "Charging Stations",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  "Find the nearest charging stations",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
