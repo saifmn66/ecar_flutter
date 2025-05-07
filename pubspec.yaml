@@ -55,6 +55,7 @@ dependencies:
   fl_chart: ^0.71.0
   easy_pie_chart: ^1.0.2
   sliding_up_panel: ^2.0.0+1
+  dio: ^5.8.0+1
 
 dev_dependencies:
   flutter_test:

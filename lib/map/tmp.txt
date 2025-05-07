@@ -305,3 +305,37 @@ DraggableScrollableSheet(
                 );
               },
             ),
+
+
+
+
+
+
+
+
+            //button 
+            Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              Color(0xFF83EBBD),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              'Book Now',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),

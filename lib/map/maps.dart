@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
+import 'package:e_car/map/models/stationModel.dart';
+import 'package:e_car/map/services/stationService.dart';
 import 'package:e_car/map/widgets/box.dart';
 import 'package:e_car/map/widgets/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:http/http.dart' as dio;
 import 'package:latlong2/latlong.dart';
 
 class ChargingStationsMap extends StatefulWidget {
@@ -21,6 +25,14 @@ class _ChargingStationsMapState extends State<ChargingStationsMap> {
   ];
 
   final TextEditingController searchController = TextEditingController();
+  final StationService _stationService = StationService();
+  late Future<List<Station>> _stationsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _stationsFuture = _stationService.getStations();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -376,12 +388,41 @@ class _ChargingStationsMapState extends State<ChargingStationsMap> {
                                   ),
                                 ),
                                 const SizedBox(height: 20),
-                                const CustomCard(),
-                                const CustomCard(),
-                                const CustomCard(),
-                                const SizedBox(
-                                  height: 20,
-                                )
+                                FutureBuilder<List<Station>>(
+                                  future: _stationsFuture,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Center(
+                                        child: Text('Error: ${snapshot.error}'),
+                                      );
+                                    } else if (!snapshot.hasData ||
+                                        snapshot.data!.isEmpty) {
+                                      return const Center(
+                                        child: Text('No stations found'),
+                                      );
+                                    } else {
+                                      final stations = snapshot.data!;
+                                      return ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: stations.length,
+                                        itemBuilder: (context, index) {
+                                          return CustomCard(
+                                            ontap: () {},
+                                            stationName: stations[index].name,
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                ),
+                                const SizedBox(height: 20),
                               ],
                             ),
                           ),
