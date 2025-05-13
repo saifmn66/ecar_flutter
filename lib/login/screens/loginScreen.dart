@@ -1,7 +1,7 @@
-import 'package:e_car/Home/home.dart';
 import 'package:e_car/login/screens/logScreen.dart';
 import 'package:e_car/login/services/tokenService.dart';
 import 'package:e_car/login/widgets/button.dart';
+import 'package:e_car/navbar/bottom-nav.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const BottomNav()),
         );
       } else {
         showDialog(
@@ -118,6 +118,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset(
+                "images/logoo1.png",
+                width: 110,
+                height: 110,
+                fit: BoxFit.contain,
+              ),
               const Text(
                 "Sign in your account",
                 style: TextStyle(

@@ -28,6 +28,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset(
+                "images/logoo1.png",
+                width: 110,
+                height: 110,
+                fit: BoxFit.contain,
+              ),
               Text(
                 "Sign up in your account",
                 style: TextStyle(
@@ -272,7 +278,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NumVerifyScreen(Name: nameController.text, Email: emailController.text, Phone: phoneController.text, Passwd: passwordController.text),
+                      builder:
+                          (context) => NumVerifyScreen(
+                            Name: nameController.text,
+                            Email: emailController.text,
+                            Phone: phoneController.text,
+                            Passwd: passwordController.text,
+                          ),
                     ),
                   );
                 },

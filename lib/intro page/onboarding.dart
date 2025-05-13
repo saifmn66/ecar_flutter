@@ -1,8 +1,7 @@
-import 'package:e_car/navbar/bottom-nav.dart';
+import 'package:e_car/login/screens/logScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lottie/lottie.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 const backgroundImage = 'assets/fullscreen.jpg';
@@ -38,7 +37,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
   void _onIntroEnd(context) {
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => const BottomNav()));
+    ).pushReplacement(MaterialPageRoute(builder: (_) => const LogScreen()));
   }
 
   @override
@@ -81,13 +80,11 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           title: "Fractional shares",
           body:
               "Instead of having to buy an entire share, invest any amount you want.",
-          image: Lottie.asset(
-            "images/intro.json", // Your Lottie file path
-            width: 300,
-            height: 300,
+          image: Image.asset(
+            "images/onb11.png", // Your Lottie file path
+            width: 350,
+            height: 350,
             fit: BoxFit.contain,
-            repeat: true,
-            animate: true,
           ),
           decoration: pageDecoration,
         ),
@@ -95,13 +92,11 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           title: "Learn as you go",
           body:
               "Download the Stockpile app and master the market with our mini-lesson.",
-          image: Lottie.asset(
-            "images/intro.json", // Your Lottie file path
-            width: 300,
-            height: 300,
+          image: Image.asset(
+            "images/onb22.png", // Your Lottie file path
+            width: 350,
+            height: 350,
             fit: BoxFit.contain,
-            repeat: true,
-            animate: true,
           ),
           decoration: pageDecoration,
         ),
@@ -109,13 +104,11 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           title: "Kids and teens",
           body:
               "Kids and teens can track their stocks 24/7 and place trades that you approve.",
-          image: Lottie.asset(
-            "images/intro.json", // Your Lottie file path
-            width: 300,
-            height: 300,
+          image: Image.asset(
+            "images/onb33.png", // Your Lottie file path
+            width: 350,
+            height: 350,
             fit: BoxFit.contain,
-            repeat: true,
-            animate: true,
           ),
           decoration: pageDecoration,
         ),
@@ -134,14 +127,11 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         PageViewModel(
           title: "Another title page",
           body: "Another beautiful body text for this example onboarding",
-          image: Lottie.asset(
-            "images/intro.json", // Your Lottie file path
-            width: 300,
-            height: 300,
+          image: Image.asset(
+            "images/onb44.png", // Your Lottie file path
+            width: 350,
+            height: 350,
             fit: BoxFit.contain,
-            repeat: true,
-            animate: true,
-            reverse: true,
           ),
 
           decoration: pageDecoration.copyWith(
@@ -183,7 +173,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         ),
       ),
       dotsContainerDecorator: const ShapeDecoration(
-        color: Color.fromARGB(255, 49, 198, 91),
+        color: Color(0xFF83EBBD),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),

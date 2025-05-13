@@ -13,6 +13,13 @@ class LogScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              "images/logoo1.png",
+              width: 150,
+              height: 150,
+              fit: BoxFit.contain,
+            ),
+            SizedBox(height: 20.0),
             CustomButton(
               color: const Color(0xFF5AE4A7),
               textColor: const Color.fromARGB(255, 255, 255, 255),

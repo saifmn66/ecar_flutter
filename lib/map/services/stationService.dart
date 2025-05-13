@@ -22,7 +22,9 @@ class StationService {
 
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body);
-        return responseData.map((station) => Station.fromJson(station)).toList();
+        return responseData
+            .map((station) => Station.fromJson(station))
+            .toList();
       } else {
         throw Exception('Failed to load stations: ${response.statusCode}');
       }

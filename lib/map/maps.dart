@@ -3,10 +3,13 @@ import 'package:e_car/map/models/stationModel.dart';
 import 'package:e_car/map/services/stationService.dart';
 import 'package:e_car/map/widgets/box.dart';
 import 'package:e_car/map/widgets/card.dart';
+import 'package:e_car/map/widgets/charger.dart';
+import 'package:e_car/map/widgets/piker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as dio;
 import 'package:latlong2/latlong.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ChargingStationsMap extends StatefulWidget {
   const ChargingStationsMap({super.key});
@@ -58,7 +61,7 @@ class _ChargingStationsMapState extends State<ChargingStationsMap> {
                           point: station,
                           child: const Icon(
                             Icons.location_on,
-                            color: Colors.green,
+                            color: Color(0xFF5AE4A7),
                             size: 50.0,
                           ),
                         );
@@ -393,8 +396,17 @@ class _ChargingStationsMapState extends State<ChargingStationsMap> {
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
+                                      return Center(
+                                        child:
+                                            LoadingAnimationWidget.dotsTriangle(
+                                              size: 50,
+                                              color: const Color.fromARGB(
+                                                255,
+                                                77,
+                                                224,
+                                                158,
+                                              ),
+                                            ),
                                       );
                                     } else if (snapshot.hasError) {
                                       return Center(
@@ -414,7 +426,13 @@ class _ChargingStationsMapState extends State<ChargingStationsMap> {
                                         itemCount: stations.length,
                                         itemBuilder: (context, index) {
                                           return CustomCard(
-                                            ontap: () {},
+                                            ontap:
+                                                () => {
+                                                  _showModalBottomSheet(
+                                                    context,
+                                                    stations[index],
+                                                  ),
+                                                },
                                             stationName: stations[index].name,
                                           );
                                         },
@@ -436,6 +454,176 @@ class _ChargingStationsMapState extends State<ChargingStationsMap> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showModalBottomSheet(BuildContext context, Station station) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        final String stationName = station.name;
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: Column(
+            children: [
+              // Header section remains the same
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 18.0, bottom: 8),
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Icon(
+                            Icons.arrow_back_ios_new,
+                            size: 20,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Text(
+                        stationName,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Text(
+                        "Socket Types",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                          color: const Color.fromARGB(198, 0, 0, 0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ],
+                ),
+              ),
+
+              // Main content with Expanded to prevent overflow
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Charger(),
+                            Charger(),
+                            Charger(),
+                            Charger(),
+                            Charger(),
+                            Charger(),
+                          ],
+                        ),
+                      ),
+                      TimePicker(),
+                      CustomCard(stationName: 'MachineA1', ontap: () {}),
+                      CustomCard(stationName: 'MachineA2', ontap: () {}),
+                      CustomCard(stationName: 'MachineA3', ontap: () {}),
+                      SizedBox(height: 80), // Space for the bottom button
+                    ],
+                  ),
+                ),
+              ),
+
+              // Fixed bottom button
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                  color: Colors.white,
+                  border: const Border(
+                    top: BorderSide(color: Color(0xFFE0E0E0), width: 1.0),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                      offset: const Offset(0, -2),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                height: 80,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Appointment Summary",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF666666),
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          "May 15, 2023 • 2:30 PM",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF83EBBD),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        'Confirm',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
